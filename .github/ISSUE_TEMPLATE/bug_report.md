@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Version (please complete the following information):**
  - Flutter Version: [e.g. v2.10.3]
  - OS: [e.g. iOS/Android]
- - Chucker Flutter Version : [e.g. 1.0.0]
+ - Chucker Flutter UI Version : [e.g. 1.0.0]
 
 **Additional context**
 Add any other context about the problem here.
