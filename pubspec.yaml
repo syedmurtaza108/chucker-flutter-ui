@@ -1,7 +1,6 @@
 name: chucker_flutter_ui
-description: A new Flutter project.
-publish_to: 'none'
-version: 1.0.0+1
+description: The UI module for chucker_flutter packages available on pub. Using this module one can make his own Chucker UI for any package. 
+version: 1.0.0
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
