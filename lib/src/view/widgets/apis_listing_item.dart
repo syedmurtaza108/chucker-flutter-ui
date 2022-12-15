@@ -57,6 +57,7 @@ class ApisListingItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: const ValueKey('api_listing_item_widget'),
       onTap: onPressed,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -72,9 +73,7 @@ class ApisListingItemWidget extends StatelessWidget {
                     label: Text(
                       statusCode.toString(),
                       textAlign: TextAlign.center,
-                      style: context.theme.textTheme.caption!.copyWith(
-                        color: Colors.white,
-                      ),
+                      style: context.textTheme.caption!.withColor(Colors.white),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -84,9 +83,7 @@ class ApisListingItemWidget extends StatelessWidget {
                       onPressed: () => onDelete(dateTime.toString()),
                       child: Text(
                         Localization.strings['delete']!,
-                        style: context.theme.textTheme.caption!.copyWith(
-                          color: Colors.red,
-                        ),
+                        style: context.textTheme.caption!.withColor(Colors.red),
                       ),
                     ),
                   ),
@@ -104,10 +101,9 @@ class ApisListingItemWidget extends StatelessWidget {
                         backgroundColor: methodColor(method),
                         label: Text(
                           method,
-                          style: context.theme.textTheme.caption!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                          style: context.textTheme.caption!
+                              .toBold()
+                              .withColor(Colors.white),
                         ),
                       ),
                       const Expanded(child: SizedBox.shrink()),
@@ -120,21 +116,17 @@ class ApisListingItemWidget extends StatelessWidget {
                   ),
                   Text(
                     path,
-                    style: context.theme.textTheme.caption!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: context.textTheme.caption!.toBold(),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     baseUrl.isEmpty ? Localization.strings['nA']! : baseUrl,
-                    style: context.theme.textTheme.caption!
-                        .copyWith(color: Colors.grey),
+                    style: context.textTheme.caption!.withColor(Colors.grey),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     dateTime.toString(),
-                    style: context.theme.textTheme.caption!
-                        .copyWith(color: Colors.grey),
+                    style: context.textTheme.caption!.withColor(Colors.grey),
                   ),
                 ],
               ),

@@ -1,5 +1,4 @@
 import 'package:chucker_flutter_ui/src/helpers/extensions.dart';
-import 'package:chucker_flutter_ui/src/helpers/shared_preferences_manager.dart';
 import 'package:chucker_flutter_ui/src/localization/localization.dart';
 
 import 'package:chucker_flutter_ui/src/models/settings.dart';
@@ -8,6 +7,7 @@ import 'package:chucker_flutter_ui/src/view/helper/chucker_button.dart';
 import 'package:chucker_flutter_ui/src/view/helper/colors.dart';
 import 'package:chucker_flutter_ui/src/view/widgets/notification.dart'
     as notification;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 ///[ChuckerUiHelper] handles the UI part of `chucker_flutter`
@@ -18,6 +18,9 @@ import 'package:flutter/material.dart';
 class ChuckerUiHelper {
   static final List<OverlayEntry?> _overlayEntries = List.empty(growable: true);
 
+  ///Only for testing
+  static bool notificationShown = false;
+
   ///[settings] to modify ui behaviour of chucker screens and notification
   static Settings settings = Settings.defaultObject();
 
@@ -27,15 +30,18 @@ class ChuckerUiHelper {
     required String method,
     required int statusCode,
     required String path,
+    required DateTime requestTime,
   }) {
     if (ChuckerUiHelper.settings.showNotification &&
         ChuckerFlutter.navigatorObserver.navigator != null) {
       final overlay = ChuckerFlutter.navigatorObserver.navigator!.overlay;
-      final _entry = _createOverlayEntry(method, statusCode, path);
+      final _entry = _createOverlayEntry(method, statusCode, path, requestTime);
       _overlayEntries.add(_entry);
       overlay?.insert(_entry);
+      notificationShown = true;
       return true;
     }
+    notificationShown = false;
     return false;
   }
 
@@ -43,6 +49,7 @@ class ChuckerUiHelper {
     String method,
     int statusCode,
     String path,
+    DateTime requestTime,
   ) {
     return OverlayEntry(
       builder: (context) {
@@ -53,6 +60,7 @@ class ChuckerUiHelper {
             method: method,
             path: path,
             removeNotification: _removeNotification,
+            requestTime: requestTime,
           ),
         );
       },
@@ -71,7 +79,7 @@ class ChuckerUiHelper {
   ///[showChuckerScreen] shows the screen containing the list of recored
   ///api requests
   static void showChuckerScreen() {
-    SharedPreferencesManager.getInstance().getSettings();
+    // SharedPreferencesManager.getInstance().getSettings();
     ChuckerFlutter.navigatorObserver.navigator!.push(
       MaterialPageRoute(
         builder: (context) => MaterialApp(
@@ -83,7 +91,7 @@ class ChuckerUiHelper {
           theme: ThemeData(
             tabBarTheme: TabBarTheme(
               labelColor: Colors.white,
-              labelStyle: context.theme.textTheme.bodyText1,
+              labelStyle: context.textTheme.bodyText1,
             ),
             backgroundColor: primaryColor,
           ),
@@ -95,11 +103,23 @@ class ChuckerUiHelper {
 }
 
 ///[ChuckerFlutter] is a helper class to initialize the library
+///
+///[chuckerButton] and notifications only be visible in debug mode
 class ChuckerFlutter {
   ///[navigatorObserver] observes the navigation of your app. It must be
   ///referenced in your MaterialApp widget
   static final navigatorObserver = NavigatorObserver();
 
+  ///[showOnRelease] decides whether to allow Chucker Flutter working in release
+  ///mode or not.
+  ///By default its value is `false`
+  static bool showOnRelease = false;
+
+  ///[isDebugMode] A wrapper of Flutter's `kDebugMode` constant
+  static bool isDebugMode = kDebugMode;
+
   ///[ChuckerButton] can be placed anywhere in the UI to open Chucker Screen
-  static final chuckerButton = ChuckerButton.getInstance();
+  static final chuckerButton = isDebugMode || ChuckerFlutter.showOnRelease
+      ? ChuckerButton.getInstance()
+      : const SizedBox.shrink();
 }

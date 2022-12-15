@@ -1,5 +1,5 @@
+import 'package:chucker_flutter_ui/src/helpers/constants.dart';
 import 'package:chucker_flutter_ui/src/helpers/extensions.dart';
-import 'package:chucker_flutter_ui/src/helpers/shared_preferences_manager.dart';
 import 'package:chucker_flutter_ui/src/localization/localization.dart';
 import 'package:chucker_flutter_ui/src/view/helper/chucker_ui_helper.dart';
 import 'package:chucker_flutter_ui/src/view/helper/colors.dart';
@@ -204,7 +204,7 @@ class _SettingsPageState extends State<SettingsPage> {
       showDeleteConfirmDialog: showDeleteConfirmDialog,
       language: language,
     );
-    SharedPreferencesManager.getInstance().setSettings(_settings);
+    // SharedPreferencesManager.getInstance().setSettings(_settings);
     setState(() {});
   }
 
@@ -250,12 +250,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   Text(
                     title,
-                    style: context.theme.textTheme.bodyText2,
+                    style: context.textTheme.bodyText2,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     description,
-                    style: context.theme.textTheme.caption,
+                    style: context.textTheme.caption,
                   ),
                   Visibility(
                     visible: helperText != null,
@@ -265,9 +265,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     visible: helperText != null,
                     child: Text(
                       '${Localization.strings['currentValue']} $helperText',
-                      style: context.theme.textTheme.caption!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: context.textTheme.caption!.toBold(),
                     ),
                   ),
                 ],
@@ -297,11 +295,10 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  importantInfo ?? '',
-                  style: context.theme.textTheme.caption!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange,
-                  ),
+                  importantInfo ?? emptyString,
+                  style: context.textTheme.caption!
+                      .toBold()
+                      .withColor(Colors.orange),
                 ),
               ),
             ],
@@ -314,10 +311,9 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _heading(String heading) {
     return Text(
       heading,
-      style: context.theme.textTheme.headline6!.copyWith(
-        color: primaryColor,
-        fontWeight: FontWeight.bold,
-      ),
+      style: context.textTheme.headline6!.toBold().withColor(
+            primaryColor,
+          ),
     );
   }
 }

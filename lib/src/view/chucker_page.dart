@@ -1,4 +1,3 @@
-import 'package:chucker_flutter_ui/src/helpers/shared_preferences_manager.dart';
 import 'package:chucker_flutter_ui/src/localization/localization.dart';
 import 'package:chucker_flutter_ui/src/models/api_response.dart';
 import 'package:chucker_flutter_ui/src/view/api_detail_page.dart';
@@ -42,8 +41,8 @@ class _ChuckerPageState extends State<ChuckerPage> {
   ];
 
   Future<void> _init() async {
-    final sharedPreferencesManager = SharedPreferencesManager.getInstance();
-    _apis = await sharedPreferencesManager.getAllApiResponses();
+    // final sharedPreferencesManager = SharedPreferencesManager.getInstance();
+    // _apis = await sharedPreferencesManager.getAllApiResponses();
     setState(() {});
   }
 
@@ -222,8 +221,8 @@ class _ChuckerPageState extends State<ChuckerPage> {
           false;
     }
     if (deleteConfirm) {
-      final sharedPreferencesManager = SharedPreferencesManager.getInstance();
-      await sharedPreferencesManager.deleteAnApi(dateTime);
+      // final sharedPreferencesManager = SharedPreferencesManager.getInstance();
+      // await sharedPreferencesManager.deleteAnApi(dateTime);
       setState(
         () => _apis.removeWhere((e) => e.requestTime.toString() == dateTime),
       );
@@ -247,8 +246,8 @@ class _ChuckerPageState extends State<ChuckerPage> {
           .where((e) => e.checked)
           .map((e) => e.requestTime.toString())
           .toList();
-      final sharedPreferencesManager = SharedPreferencesManager.getInstance();
-      await sharedPreferencesManager.deleteSelected(dateTimes);
+      // final sharedPreferencesManager = SharedPreferencesManager.getInstance();
+      // await sharedPreferencesManager.deleteSelected(dateTimes);
       setState(
         () => _apis.removeWhere(
           (e) => dateTimes.contains(e.requestTime.toString()),

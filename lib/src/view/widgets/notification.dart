@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:chucker_flutter_ui/src/helpers/extensions.dart';
 import 'package:chucker_flutter_ui/src/localization/localization.dart';
-
 import 'package:chucker_flutter_ui/src/view/helper/chucker_ui_helper.dart';
 import 'package:chucker_flutter_ui/src/view/helper/colors.dart';
 import 'package:chucker_flutter_ui/src/view/widgets/primary_button.dart';
@@ -16,6 +15,7 @@ class Notification extends StatefulWidget {
     required this.method,
     required this.path,
     required this.removeNotification,
+    required this.requestTime,
     Key? key,
   }) : super(key: key);
 
@@ -30,6 +30,9 @@ class Notification extends StatefulWidget {
 
   ///Call back to notify parent to remove notification
   final VoidCallback removeNotification;
+
+  ///Time when api request sent
+  final DateTime requestTime;
 
   @override
   State<Notification> createState() => _NotificationState();
@@ -51,9 +54,12 @@ class _NotificationState extends State<Notification>
 
   @override
   void initState() {
+    super.initState();
     Future.delayed(
       Duration(seconds: ChuckerUiHelper.settings.duration.inSeconds - 1),
-      _controller.reverse,
+      () {
+        if (mounted) _controller.reverse();
+      },
     );
 
     _controller.addListener(
@@ -64,12 +70,12 @@ class _NotificationState extends State<Notification>
         }
       },
     );
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const ValueKey('notification_button'),
       onTap: () {
         if (_controller.isAnimating) {
           _controller.stop();
@@ -108,34 +114,34 @@ class _NotificationState extends State<Notification>
                   Text(
                     widget.statusCode.toString(),
                     textAlign: TextAlign.center,
-                    style: context.theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: context.textTheme.bodyText1!.toBold(),
                   ),
                   const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        widget.method.toUpperCase(),
-                        style: context.theme.textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: methodColor(widget.method),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          widget.method.toUpperCase(),
+                          style: context.textTheme.bodyText2!
+                              .toBold()
+                              .withColor(methodColor(widget.method)),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.path,
-                        style: context.theme.textTheme.caption,
-                      ),
-                    ],
+                        const SizedBox(height: 4),
+                        Text(
+                          widget.path,
+                          style: context.textTheme.caption,
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(width: 16),
                   PrimaryButton(
                     onPressed: () {
                       _controller.animateTo(0);
                       ChuckerUiHelper.showChuckerScreen();
+                      _openDetails();
                     },
                     text: Localization.strings['details']!,
                     foreColor: Colors.white,
@@ -147,6 +153,15 @@ class _NotificationState extends State<Notification>
         ),
       ),
     );
+  }
+
+  Future<void> _openDetails() async {
+    // final api = await SharedPreferencesManager.getInstance().getApiResponse(
+    //   widget.requestTime,
+    // );
+    // await ChuckerFlutter.navigatorObserver.navigator?.push(
+    //   MaterialPageRoute(builder: (_) => ApiDetailsPage(api: api)),
+    // );
   }
 
   @override

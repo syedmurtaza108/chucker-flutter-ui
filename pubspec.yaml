@@ -1,6 +1,7 @@
 name: chucker_flutter_ui
 description: The UI module for chucker_flutter packages available on pub. Using this module one can make his own Chucker UI for any package. 
 version: 1.0.0
+homepage: https://github.com/syedmurtaza108/chucker-flutter-ui
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
@@ -10,8 +11,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  share_plus: ^4.0.1
-  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

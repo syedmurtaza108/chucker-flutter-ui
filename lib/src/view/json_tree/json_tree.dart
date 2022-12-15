@@ -1,6 +1,7 @@
-import 'package:chucker_flutter_ui/src/helpers/constants.dart';
 import 'package:chucker_flutter_ui/src/helpers/extensions.dart';
 import 'package:chucker_flutter_ui/src/localization/localization.dart';
+import 'package:chucker_flutter_ui/src/view/helper/colors.dart';
+import 'package:chucker_flutter_ui/src/view/image_preview_dialog.dart';
 import 'package:chucker_flutter_ui/src/view/widgets/sizeable_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
